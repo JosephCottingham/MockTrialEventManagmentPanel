@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!--begin::Page Custom Styles(used by this page)-->
+    <link href="assets/metronic/assets/plugins/custom/kanban/kanban.bundle.css" rel="stylesheet" type="text/css" />
+
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="assets/metronic/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/metronic/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/metronic/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/metronic/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet"
+        type="text/css" />
+
+    <!--begin::Layout Themes(used by all pages)-->
+
+    <link href="assets/metronic/assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" />
+    <link href="assets/metronic/assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" />
+    <link href="assets/metronic/assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" />
+    <link href="assets/metronic/assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+
+    <title></title>
+</head>
+
+<body class="tbody" id="theBody">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">MockTrialBallot</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <!-- {% if current_user.is_authenticated %} -->
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('app.logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row page-controls">
+            <div class="col-lg-1 col-xl-1">
+            </div>
+            <div class="col-lg-3 col-xl-3">
+                <h2>Round 2</h2>
+            </div>
+            <div class="col-lg-5 col-xl-8">
+                <div style="float: right;">
+                    <input type="button" value="Clear Groups" class="btn btn-light-danger btn-lg font-weight-bold">
+                    <input type="button" value="Auto Tab" class="btn btn-light-primary btn-lg font-weight-bold"
+                        id="auto_tab">
+                    <input type="button" value="Save" class="btn btn-success btn-lg font-weight-bold" id="save_alarm">
+                    <input type="button" value="Commit Round" class="btn btn-warning btn-lg font-weight-bold mr-2"
+                        id="commit_round">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1 col-xl-1 secondary-nav-col">
+            <div class="card card-custom sticky" data-sticky="true" data-margin-top="140px" data-sticky-for="2000"
+                data-sticky-class="sticky">
+                <div class="card-body p-0">
+                    <ul class="navi navi-bold navi-hover my-5" role="tablist">
+                        <li class="navi-item">
+                            <a class="navi-link {% if pos==0 %} active {% endif %}" href="index.html">
+                                <span class="navi-icon">
+                                    <i class="flaticon-customer"></i>
+                                </span>
+                                <span class="navi-text">General</span>
+                            </a>
+                        </li>
+                        <!-- {% if is_admin %} -->
+                        <li class="navi-item">
+                            <a class="navi-link {% if pos==1 %} active {% endif %}" href="/judges">
+                                <span class="navi-icon">
+                                    <i class="flaticon-avatar"></i>
+                                </span>
+                                <span class="navi-text"><strike> Judges</strike></span>
+                            </a>
+                        </li>
+                        <li class="navi-item">
+                            <a class="navi-link {% if pos==2 %} active {% endif %}" href="/teams">
+                                <span class="navi-icon">
+                                    <i class="flaticon-settings"></i>
+                                </span>
+                                <span class="navi-text"><strike> Teams</strike></span>
+                            </a>
+                        </li>
+                        <li class="navi-item">
+                            <a class="navi-link {% if pos==3 %} active {% endif %}" href="/ballots">
+                                <span class="navi-icon">
+                                    <i class="flaticon-lock"></i>
+                                </span>
+                                <span class="navi-text"><strike> Ballots</strike></span>
+                            </a>
+                        </li>
+                        <li class="navi-item">
+                            <a class="navi-link {% if pos==4 %} active {% endif %}" href="tabbing_editing.html"
+                                data-toggle="tooltip" title="" data-placement="right">
+                                <span class="navi-icon">
+                                    <i class="flaticon-coins"></i>
+                                </span>
+                                <span class="navi-text">Tabing</span>
+                            </a>
+                        </li>
+                        <li class="navi-item">
+                            <a class="navi-link {% if pos==4 %} active {% endif %}" href="/live_ballots"
+                                data-toggle="tooltip" title="" data-placement="right">
+                                <span class="navi-icon">
+                                    <i class="flaticon-coins"></i>
+                                </span>
+                                <span class="navi-text"><strike> Live Ballots</strike></span>
+                            </a>
+                        </li>
+                        <!-- {% endif %} -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xl-3 team-list">
+            <div class="container-fluid d-flex h-100 flex-column card-body">
+                <div
+                    class="card card card-custom card-stretch gutter-b card-event-top-teams flex-grow-1 team-list-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3 class="card-label">
+                                All Teams</h3>
+                        </div>
+
+                    </div>
+                    <!--begin::Body-->
+                    <div id="team_all_list" class="card-body pt-2 grouping-card-body list-group">
+                        <!--begin::Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10 list-group-item">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    style="background-image: url('https://news.psu.edu/sites/default/files/styles/threshold-992/public/Athletics.jpg?itok=zB2q81P2')">
+                                </div>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Title-->
+                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 mr-2">
+                                <a href="#"
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">Pennstate
+                                    A</a>
+                                <span class="text-muted font-weight-bold">Wins: 2 Losses: 1 Ties: 1</span>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center mt-lg-0 mt-3">
+
+                                <!--begin::Btn-->
+                                <a href="team_view.html" class="btn btn-icon btn-light btn-sm">
+                                    <span class="svg-icon svg-icon-success">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                        x="11" y="5" width="2" height="14" rx="1" />
+                                                    <path
+                                                        d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                        fill="#000000" fill-rule="nonzero"
+                                                        transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </a>
+                                <!--end::Btn-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10 list-group-item">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    style="background-image: url('https://www.kaplanpathways.com/wp-content/uploads/2018/09/new-partnership-arizona-state-university-feature-block.png')">
+                                </div>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Title-->
+                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 mr-2">
+                                <a href="#"
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">Arizona
+                                    State 2</a>
+                                <span class="text-muted font-weight-bold">Wins: 2 Losses: 1 Ties: 1</span>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center mt-lg-0 mt-3">
+                                <!--begin::Btn-->
+                                <a href="team_view.html" class="btn btn-icon btn-light btn-sm">
+                                    <span class="svg-icon svg-icon-success">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                        x="11" y="5" width="2" height="14" rx="1" />
+                                                    <path
+                                                        d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                        fill="#000000" fill-rule="nonzero"
+                                                        transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </a>
+                                <!--end::Btn-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10 list-group-item">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    style="background-image: url('https://news.psu.edu/sites/default/files/styles/threshold-992/public/Athletics.jpg?itok=zB2q81P2')">
+                                </div>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Title-->
+                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 mr-2">
+                                <a href="#"
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">Pennstate
+                                    B</a>
+                                <span class="text-muted font-weight-bold">Wins: 2 Losses: 1 Ties: 1</span>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center mt-lg-0 mt-3">
+                                <!--begin::Btn-->
+                                <a href="team_view.html" class="btn btn-icon btn-light btn-sm">
+                                    <span class="svg-icon svg-icon-success">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                        x="11" y="5" width="2" height="14" rx="1" />
+                                                    <path
+                                                        d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                        fill="#000000" fill-rule="nonzero"
+                                                        transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </a>
+                                <!--end::Btn-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--begin: Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10 list-group-item">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    style="background-image: url('https://d92mrp7hetgfk.cloudfront.net/images/sites/misc/new_york_u-1/standard.png?1548463848')">
+                                </div>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Title-->
+                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 mr-2">
+                                <a href="#"
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">New
+                                    York
+                                    Boomers</a>
+                                <span class="text-muted font-weight-bold">Wins: 2 Losses: 1 Ties: 1</span>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center mt-lg-0 mt-3">
+
+                                <!--begin::Btn-->
+                                <a href="team_view.html" class="btn btn-icon btn-light btn-sm">
+                                    <span class="svg-icon svg-icon-success">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                        x="11" y="5" width="2" height="14" rx="1" />
+                                                    <path
+                                                        d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                        fill="#000000" fill-rule="nonzero"
+                                                        transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </a>
+                                <!--end::Btn-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--end::Items-->
+                        <!--begin::Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10 list-group-item">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    style="background-image: url('https://news.psu.edu/sites/default/files/styles/threshold-992/public/Athletics.jpg?itok=zB2q81P2')">
+                                </div>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Title-->
+                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 mr-2">
+                                <a href="#"
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">Pennstate
+                                    A</a>
+                                <span class="text-muted font-weight-bold">Wins: 2 Losses: 1 Ties: 1</span>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center mt-lg-0 mt-3">
+
+                                <!--begin::Btn-->
+                                <a href="team_view.html" class="btn btn-icon btn-light btn-sm">
+                                    <span class="svg-icon svg-icon-success">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                        x="11" y="5" width="2" height="14" rx="1" />
+                                                    <path
+                                                        d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                        fill="#000000" fill-rule="nonzero"
+                                                        transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </a>
+                                <!--end::Btn-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10 list-group-item">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    style="background-image: url('https://www.kaplanpathways.com/wp-content/uploads/2018/09/new-partnership-arizona-state-university-feature-block.png')">
+                                </div>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Title-->
+                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 mr-2">
+                                <a href="#"
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">Arizona
+                                    State 2</a>
+                                <span class="text-muted font-weight-bold">Wins: 2 Losses: 1 Ties: 1</span>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center mt-lg-0 mt-3">
+                                <!--begin::Btn-->
+                                <a href="team_view.html" class="btn btn-icon btn-light btn-sm">
+                                    <span class="svg-icon svg-icon-success">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                        x="11" y="5" width="2" height="14" rx="1" />
+                                                    <path
+                                                        d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                        fill="#000000" fill-rule="nonzero"
+                                                        transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </a>
+                                <!--end::Btn-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10 list-group-item">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    style="background-image: url('https://news.psu.edu/sites/default/files/styles/threshold-992/public/Athletics.jpg?itok=zB2q81P2')">
+                                </div>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Title-->
+                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 mr-2">
+                                <a href="#"
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">Pennstate
+                                    B</a>
+                                <span class="text-muted font-weight-bold">Wins: 2 Losses: 1 Ties: 1</span>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center mt-lg-0 mt-3">
+
+                                <!--begin::Btn-->
+                                <a href="team_view.html" class="btn btn-icon btn-light btn-sm">
+                                    <span class="svg-icon svg-icon-success">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                        x="11" y="5" width="2" height="14" rx="1" />
+                                                    <path
+                                                        d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                        fill="#000000" fill-rule="nonzero"
+                                                        transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </a>
+                                <!--end::Btn-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--begin: Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10 list-group-item">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    style="background-image: url('https://d92mrp7hetgfk.cloudfront.net/images/sites/misc/new_york_u-1/standard.png?1548463848')">
+                                </div>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Title-->
+                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 mr-2">
+                                <a href="#"
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">New
+                                    York
+                                    Boomers</a>
+                                <span class="text-muted font-weight-bold">Wins: 2 Losses: 1 Ties: 1</span>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center mt-lg-0 mt-3">
+                                <!--begin::Btn-->
+                                <a href="team_view.html" class="btn btn-icon btn-light btn-sm">
+                                    <span class="svg-icon svg-icon-success">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                        x="11" y="5" width="2" height="14" rx="1" />
+                                                    <path
+                                                        d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                        fill="#000000" fill-rule="nonzero"
+                                                        transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </a>
+                                <!--end::Btn-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--end::Items-->
+                        <!--begin::Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10 list-group-item">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    style="background-image: url('https://news.psu.edu/sites/default/files/styles/threshold-992/public/Athletics.jpg?itok=zB2q81P2')">
+                                </div>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Title-->
+                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 mr-2">
+                                <a href="#"
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">Pennstate
+                                    A</a>
+                                <span class="text-muted font-weight-bold">Wins: 2 Losses: 1 Ties: 1</span>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center mt-lg-0 mt-3">
+                                <!--begin::Btn-->
+                                <a href="team_view.html" class="btn btn-icon btn-light btn-sm">
+                                    <span class="svg-icon svg-icon-success">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                        x="11" y="5" width="2" height="14" rx="1" />
+                                                    <path
+                                                        d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                        fill="#000000" fill-rule="nonzero"
+                                                        transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </a>
+                                <!--end::Btn-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex flex-wrap align-items-center mb-10 list-group-item">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    style="background-image: url('https://www.kaplanpathways.com/wp-content/uploads/2018/09/new-partnership-arizona-state-university-feature-block.png')">
+                                </div>
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Title-->
+                            <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 mr-2">
+                                <a href="#"
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">Arizona
+                                    State 2</a>
+                                <span class="text-muted font-weight-bold">Wins: 2 Losses: 1 Ties: 1</span>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center mt-lg-0 mt-3">
+                                <!--begin::Btn-->
+                                <a href="team_view.html" class="btn btn-icon btn-light btn-sm">
+                                    <span class="svg-icon svg-icon-success">
+                                        <span class="svg-icon svg-icon-md">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Arrow-right.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                        x="11" y="5" width="2" height="14" rx="1" />
+                                                    <path
+                                                        d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                        fill="#000000" fill-rule="nonzero"
+                                                        transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </a>
+                                <!--end::Btn-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--end::Items-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 col-xl-8 tab-groupings">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col">
+                        <div class="card card card-custom card-stretch gutter-b card-event-top-teams grouping-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Group 1</h3>
+
+                                </div>
+                                <div class="form-group judge-select">
+                                    <select class="form-control" id="judge_select_group_1">
+                                        <option>Select Presiding Judge</option>
+                                        <option>Mehdi Wilson</option>
+                                        <option>Gabriella Mcfadden</option>
+                                        <option>Iman Rees</option>
+                                        <option>Kajus Pearson</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-lg btn-primary text-center"
+                                        value="Select Additional Judges" data-toggle="modal"
+                                        data-target="#select-judges-1" data-whatever="1">
+
+                                </div>
+
+                            </div>
+                            <!--begin::Body-->
+                            <div id="group_0" class="card-body pt-2 grouping-card-body list-group">
+
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card card card-custom card-stretch gutter-b card-event-top-teams grouping-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Group 2</h3>
+                                </div>
+                                <div class="form-group judge-select">
+                                    <select class="form-control" id="judge_select_group_1">
+                                        <option>Select Presiding Judge</option>
+                                        <option>Mehdi Wilson</option>
+                                        <option>Gabriella Mcfadden</option>
+                                        <option>Iman Rees</option>
+                                        <option>Kajus Pearson</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-lg btn-primary text-center"
+                                        value="Select Additional Judges" data-toggle="modal"
+                                        data-target="#select-judges-1" data-whatever="1">
+
+                                </div>
+                            </div>
+                            <!--begin::Body-->
+                            <div id="group_1" class="card-body pt-2 grouping-card-body list-group">
+
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card card card-custom card-stretch gutter-b card-event-top-teams grouping-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Group 3</h3>
+                                </div>
+                                <div class="form-group judge-select">
+                                    <select class="form-control" id="judge_select_group_1">
+                                        <option>Select Presiding Judge</option>
+                                        <option>Mehdi Wilson</option>
+                                        <option>Gabriella Mcfadden</option>
+                                        <option>Iman Rees</option>
+                                        <option>Kajus Pearson</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-lg btn-primary text-center"
+                                        value="Select Additional Judges" data-toggle="modal"
+                                        data-target="#select-judges-1" data-whatever="1">
+
+                                </div>
+                            </div>
+                            <!--begin::Body-->
+                            <div id="group_2" class="card-body pt-2 grouping-card-body list-group">
+
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card card card-custom card-stretch gutter-b card-event-top-teams grouping-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Group 4</h3>
+                                </div>
+                                <div class="form-group judge-select">
+                                    <select class="form-control" id="judge_select_group_1">
+                                        <option>Select Presiding Judge</option>
+                                        <option>Mehdi Wilson</option>
+                                        <option>Gabriella Mcfadden</option>
+                                        <option>Iman Rees</option>
+                                        <option>Kajus Pearson</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-lg btn-primary text-center"
+                                        value="Select Additional Judges" data-toggle="modal"
+                                        data-target="#select-judges-1" data-whatever="1">
+
+                                </div>
+                            </div>
+                            <!--begin::Body-->
+                            <div id="group_3" class="card-body pt-2 grouping-card-body list-group">
+
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card card card-custom card-stretch gutter-b card-event-top-teams grouping-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Group 5</h3>
+                                </div>
+                                <div class="form-group judge-select">
+                                    <select class="form-control" id="judge_select_group_1">
+                                        <option>Select Presiding Judge</option>
+                                        <option>Mehdi Wilson</option>
+                                        <option>Gabriella Mcfadden</option>
+                                        <option>Iman Rees</option>
+                                        <option>Kajus Pearson</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-lg btn-primary text-center"
+                                        value="Select Additional Judges" data-toggle="modal"
+                                        data-target="#select-judges-1" data-whatever="1">
+
+                                </div>
+                            </div>
+                            <!--begin::Body-->
+                            <div id="group_4" class="card-body pt-2 grouping-card-body list-group">
+
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card card card-custom card-stretch gutter-b card-event-top-teams grouping-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Group 6</h3>
+                                </div>
+                                <div class="form-group judge-select">
+                                    <select class="form-control" id="judge_select_group_1">
+                                        <option>Select Presiding Judge</option>
+                                        <option>Mehdi Wilson</option>
+                                        <option>Gabriella Mcfadden</option>
+                                        <option>Iman Rees</option>
+                                        <option>Kajus Pearson</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-lg btn-primary text-center"
+                                        value="Select Additional Judges" data-toggle="modal"
+                                        data-target="#select-judges-1" data-whatever="1">
+
+                                </div>
+                            </div>
+                            <!--begin::Body-->
+                            <div id="group_5" class="card-body pt-2 grouping-card-body list-group">
+
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card card card-custom card-stretch gutter-b card-event-top-teams grouping-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Group 7</h3>
+                                </div>
+                                <div class="form-group judge-select">
+                                    <select class="form-control" id="judge_select_group_1">
+                                        <option>Select Presiding Judge</option>
+                                        <option>Mehdi Wilson</option>
+                                        <option>Gabriella Mcfadden</option>
+                                        <option>Iman Rees</option>
+                                        <option>Kajus Pearson</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-lg btn-primary text-center"
+                                        value="Select Additional Judges" data-toggle="modal"
+                                        data-target="#select-judges-1" data-whatever="1">
+
+                                </div>
+                            </div>
+                            <!--begin::Body-->
+                            <div id="group_6" class="card-body pt-2 grouping-card-body list-group">
+
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card card card-custom card-stretch gutter-b card-event-top-teams grouping-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Group 8</h3>
+                                </div>
+                                <div class="form-group judge-select">
+                                    <select class="form-control" id="judge_select_group_1">
+                                        <option>Select Presiding Judge</option>
+                                        <option>Mehdi Wilson</option>
+                                        <option>Gabriella Mcfadden</option>
+                                        <option>Iman Rees</option>
+                                        <option>Kajus Pearson</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-lg btn-primary text-center"
+                                        value="Select Additional Judges" data-toggle="modal"
+                                        data-target="#select-judges-1" data-whatever="1">
+
+                                </div>
+                            </div>
+                            <!--begin::Body-->
+                            <div id="group_7" class="card-body pt-2 grouping-card-body list-group">
+
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card card card-custom card-stretch gutter-b card-event-top-teams grouping-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Group 9</h3>
+                                </div>
+                                <div class="form-group judge-select">
+                                    <select class="form-control" id="judge_select_group_1">
+                                        <option>Select Presiding Judge</option>
+                                        <option>Mehdi Wilson</option>
+                                        <option>Gabriella Mcfadden</option>
+                                        <option>Iman Rees</option>
+                                        <option>Kajus Pearson</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-lg btn-primary text-center"
+                                        value="Select Additional Judges" data-toggle="modal"
+                                        data-target="#select-judges-1" data-whatever="1">
+
+                                </div>
+                            </div>
+                            <!--begin::Body-->
+                            <div id="group_8" class="card-body pt-2 grouping-card-body list-group">
+
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--begin::Global Config(global config for global JS scripts)-->
+        <script>
+            var KTAppSettings = {
+                "breakpoints": {
+                    "sm": 576,
+                    "md": 768,
+                    "lg": 992,
+                    "xl": 1200,
+                    "xxl": 1400
+                },
+                "colors": {
+                    "theme": {
+                        "base": {
+                            "white": "#ffffff",
+                            "primary": "#3699FF",
+                            "secondary": "#E5EAEE",
+                            "success": "#1BC5BD",
+                            "info": "#8950FC",
+                            "warning": "#FFA800",
+                            "danger": "#F64E60",
+                            "light": "#E4E6EF",
+                            "dark": "#181C32"
+                        },
+                        "light": {
+                            "white": "#ffffff",
+                            "primary": "#E1F0FF",
+                            "secondary": "#EBEDF3",
+                            "success": "#C9F7F5",
+                            "info": "#EEE5FF",
+                            "warning": "#FFF4DE",
+                            "danger": "#FFE2E5",
+                            "light": "#F3F6F9",
+                            "dark": "#D6D6E0"
+                        },
+                        "inverse": {
+                            "white": "#ffffff",
+                            "primary": "#ffffff",
+                            "secondary": "#3F4254",
+                            "success": "#ffffff",
+                            "info": "#ffffff",
+                            "warning": "#ffffff",
+                            "danger": "#ffffff",
+                            "light": "#464E5F",
+                            "dark": "#ffffff"
+                        }
+                    },
+                    "gray": {
+                        "gray-100": "#F3F6F9",
+                        "gray-200": "#EBEDF3",
+                        "gray-300": "#E4E6EF",
+                        "gray-400": "#D1D3E0",
+                        "gray-500": "#B5B5C3",
+                        "gray-600": "#7E8299",
+                        "gray-700": "#5E6278",
+                        "gray-800": "#3F4254",
+                        "gray-900": "#181C32"
+                    }
+                },
+                "font-family": "Poppins"
+            };
+        </script>
+        <!--end::Global Config-->
+</body>
+
+<footer style=" z-index: 10; height: 3em; margin-top: 3em; bottom: 1.5em;">
+    <!--begin::Footer-->
+    <div class="footer bg-white py-4 d-flex flex-lg-column " id="kt_footer">
+        <!--begin::Container-->
+        <div class=" container-fluid  d-flex flex-column flex-md-row align-items-center justify-content-between">
+            <!--begin::Copyright-->
+            <div class="text-dark order-2 order-md-1">
+                <span class="text-muted font-weight-bold mr-2">2020&copy;</span>
+                <a href="https://yourballot.org/" target="_blank" class="text-dark-75 text-hover-primary">Powered By
+                    YourBallot</a>
+            </div>
+            <!--end::Copyright-->
+
+            <!--begin::Nav-->
+            <div class="nav nav-dark">
+                <a href="https://yourballot.org/" target="_newtab" class="nav-link pl-0 pr-5">About</a>
+                <a href="mailto:jacob.lemler@yourballot.org?cc=joseph.cottingham@yourballot.org" target="_newtab"
+                    class="nav-link pl-0 pr-0">Contact</a>
+            </div>
+            <!--end::Nav-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Footer-->
+
+    <!--end::Global Config-->
+    <!--begin::Global Theme Bundle(used by all pages)-->
+    <script src="assets/metronic/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="assets/metronic/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+    <script src="assets/metronic/assets/js/scripts.bundle.js"></script>
+    <!--end::Global Theme Bundle-->
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="assets/metronic/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
+    <script src="tabbing_editing.js"></script>
+</footer>
+
+<script>
+    $(document).ready(function () {
+        if ($(document).height() > $(window).height()) {
+            $('#footer').css('position', 'relative');
+        }
+    });
+</script>
+
+
+<!-- Commit Round Modal-->
+<div class="modal fade" id="commit_round" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary font-weight-bold">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Select Judges Modal-->
+<div class="modal fade" id="select-judges-1" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content select-judges-modal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Select Non Presiding Judges</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <select id="select-judge-dual-listbox-1" class="dual-listbox" multiple>
+                        <option value="1">Select Presiding Judge</option>
+                        <option value="2">Mehdi Wilson</option>
+                        <option value="3">Gabriella Mcfadden</option>
+                        <option value="4">Iman Rees</option>
+                        <option value="5">Kajus Pearson</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold"
+                        data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary font-weight-bold">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var listBox = $('#select-judge-dual-listbox-1');
+
+    var $this = listBox;
+
+    // get options
+    var options = [];
+    $this.children('option').each(function () {
+        var value = $(this).val();
+        var label = $(this).text();
+        options.push({
+            text: label,
+            value: value
+        });
+    });
+
+    // init dual listbox
+    var dualListBox = new DualListbox($this.get(0), {
+        addEvent: function (value) {
+            console.log(value);
+        },
+        removeEvent: function (value) {
+            console.log(value);
+        },
+        availableTitle: 'Available options',
+        selectedTitle: 'Selected options',
+        addButtonText: 'Add',
+        removeButtonText: 'Remove',
+        addAllButtonText: 'Add All',
+        removeAllButtonText: 'Remove All',
+        options: options,
+    });
+</script>
+
+
+
+</html>
